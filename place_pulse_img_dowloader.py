@@ -22,7 +22,6 @@ with open(STORED_IMG_ID_FILE) as input_file:
         STORED_IMG_IDS.add(line.strip())
 
 with open(DATA_FILE) as input_file:
-    with open(STORED_IMG_ID_FILE, 'a') as output_file:
         skip_first_line = True
         for line in input_file:
             if skip_first_line:
@@ -34,12 +33,14 @@ with open(DATA_FILE) as input_file:
                 print ('saving img {}...'.format(left_id))
                 urlrequest.urlretrieve(IMG_URL.format(left_lat, left_long), IMG_PATH.format(left_id))
                 STORED_IMG_IDS.add(left_id)
-                output_file.write('{}\n'.format(left_id))
-                time.sleep(random.randint(1, 3))  # wait some time, trying to avoid google forbidden (of crawler)
+                with open(STORED_IMG_ID_FILE, 'a') as output_file:
+                    output_file.write('{}\n'.format(left_id))
+                time.sleep(1)  # wait some time, trying to avoid google forbidden (of crawler)
 
             if right_id not in STORED_IMG_IDS:
                 print ('saving img {}...'.format(right_id))
                 urlrequest.urlretrieve(IMG_URL.format(right_lat, right_long), IMG_PATH.format(right_id))
                 STORED_IMG_IDS.add(right_id)
-                output_file.write('{}\n'.format(right_id))
-                time.sleep(random.randint(1, 3))  # wait some time, trying to avoid google forbidden (of crawler)
+                with open(STORED_IMG_ID_FILE, 'a') as output_file:
+                    output_file.write('{}\n'.format(right_id))
+                time.sleep(1)  # wait some time, trying to avoid google forbidden (of crawler)
